@@ -7,9 +7,21 @@ enum LineValue {
     Empty,
 }
 
-fn main() {
-    task_1();
-    task_2();
+fn read_line(line_number: usize, line_content: Result<String, Error>) -> LineValue {
+    match line_content {
+        Ok(content) => {
+            if content.is_empty() {
+                LineValue::Empty
+            } else {
+                let number = content.parse::<u32>();
+                match number {
+                    Ok(number) => LineValue::Number(number),
+                    Err(_) => panic!("The value on line {} is not an integer", line_number),
+                }
+            }
+        }
+        Err(e) => panic!("Error reading line {}: {:?}", line_number, e),
+    }
 }
 
 fn task_1() {
@@ -80,19 +92,7 @@ fn task_2() {
     );
 }
 
-fn read_line(line_number: usize, line_content: Result<String, Error>) -> LineValue {
-    match line_content {
-        Ok(content) => {
-            if content.is_empty() {
-                LineValue::Empty
-            } else {
-                let number = content.parse::<u32>();
-                match number {
-                    Ok(number) => LineValue::Number(number),
-                    Err(_) => panic!("The value on line {} is not an integer", line_number),
-                }
-            }
-        }
-        Err(e) => panic!("Error reading line {}: {:?}", line_number, e),
-    }
+fn main() {
+    task_1();
+    task_2();
 }
